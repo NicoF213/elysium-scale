@@ -16,6 +16,7 @@ interface Props {
   price?: string;
   image?: string;
   imageAlt?: string;
+  brandColor?: string;
 }
 
 const {
@@ -29,6 +30,7 @@ const {
   price,
   image,
   imageAlt,
+  brandColor,
 } = Astro.props;
 ---
 
@@ -57,13 +59,20 @@ const {
         <div class="flex flex-col md:flex-row gap-6">
           {image && (
             <div class="shrink-0">
-              <img
-                src={image}
-                alt={imageAlt ?? name}
-                width="160"
-                height="160"
-                class="w-32 h-32 md:w-40 md:h-40 object-contain rounded-xl bg-dark-bg p-2"
-              />
+              <div
+                class="w-32 h-32 md:w-40 md:h-40 rounded-2xl flex items-center justify-center overflow-hidden"
+                style={brandColor
+                  ? `background-color: ${brandColor}15; border: 1px solid ${brandColor}40;`
+                  : 'background-color: var(--color-dark-bg); border: 1px solid var(--color-dark-border);'}
+              >
+                <img
+                  src={image}
+                  alt={imageAlt ?? name}
+                  width="160"
+                  height="160"
+                  class="w-24 h-24 md:w-28 md:h-28 object-contain"
+                />
+              </div>
             </div>
           )}
           <div class="flex-1">
@@ -78,7 +87,7 @@ const {
               {price && (
                 <span class="text-2xl font-bold text-text-primary">{price}</span>
               )}
-              <AffiliateLink affiliateId={affiliateId} size="lg" />
+              <AffiliateLink affiliateId={affiliateId} size="lg" customColor={brandColor} />
             </div>
           </div>
         </div>
@@ -135,12 +144,18 @@ const {
       </div>
 
       <!-- Bottom CTA -->
-      <div class="mt-10 rounded-2xl bg-brand-gradient-subtle border border-brand-purple/20 p-8 text-center">
+      <div
+        class="mt-10 rounded-2xl p-8 text-center"
+        style={brandColor
+          ? `background: linear-gradient(135deg, ${brandColor}20, ${brandColor}08); border: 1px solid ${brandColor}30;`
+          : ''}
+        class:list={!brandColor ? ['bg-brand-gradient-subtle border border-brand-purple/20'] : []}
+      >
         <h3 class="text-xl font-bold text-text-primary mb-2">Prêt à essayer {name} ?</h3>
         <p class="text-text-secondary mb-6 text-sm">
           Accédez à l'offre via notre lien partenaire.
         </p>
-        <AffiliateLink affiliateId={affiliateId} size="lg" />
+        <AffiliateLink affiliateId={affiliateId} size="lg" customColor={brandColor} />
       </div>
     </div>
   </div>

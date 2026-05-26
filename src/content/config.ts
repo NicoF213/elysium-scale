@@ -27,6 +27,7 @@ const products = defineCollection({
     price: z.string().optional(),
     image: z.string().optional(),
     imageAlt: z.string().optional(),
+    brandColor: z.string().optional(),
     featured: z.boolean().default(false),
     publishDate: z.date().optional(),
   }),

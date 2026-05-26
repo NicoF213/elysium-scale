@@ -57,11 +57,29 @@ const categories = [...new Set(sorted.map((p) => p.data.category))];
       </div>
     ) : (
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {sorted.map((product) => (
+        {sorted.map((product) => {
+          const color = product.data.brandColor;
+          return (
           <Card hoverable padding="none">
             <div class="p-6 flex flex-col h-full">
               <div class="flex items-start justify-between mb-4">
-                <Badge variant="purple">{product.data.category}</Badge>
+                <div class="flex items-center gap-3">
+                  {product.data.image && (
+                    <div
+                      class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 overflow-hidden"
+                      style={color ? `background-color: ${color}10; border: 1px solid ${color}40;` : ''}
+                    >
+                      <img
+                        src={product.data.image}
+                        alt={product.data.imageAlt ?? product.data.name}
+                        width="40"
+                        height="40"
+                        class="w-8 h-8 object-contain"
+                      />
+                    </div>
+                  )}
+                  <Badge variant="purple">{product.data.category}</Badge>
+                </div>
                 {product.data.featured && <Badge variant="pink">⭐ Top choix</Badge>}
               </div>
 
@@ -94,12 +112,17 @@ const categories = [...new Set(sorted.map((p) => p.data.category))];
                   >
                     Voir l'avis
                   </a>
-                  <AffiliateLink affiliateId={product.data.affiliateId} size="sm" />
+                  <AffiliateLink
+                    affiliateId={product.data.affiliateId}
+                    size="sm"
+                    customColor={color}
+                  />
                 </div>
               </div>
             </div>
           </Card>
-        ))}
+          );
+        })}
       </div>
     )}
   </div>

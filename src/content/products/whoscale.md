@@ -15,6 +15,9 @@ cons:
   - "Données principalement orientées publicité Meta/Google"
 affiliateId: "whoscale"
 price: "-20% avec le code scale20"
+image: "/images/whoscale-logo.png"
+imageAlt: "Logo WhoScale"
+brandColor: "#F5620F"
 featured: true
 publishDate: 2025-01-20
 ---

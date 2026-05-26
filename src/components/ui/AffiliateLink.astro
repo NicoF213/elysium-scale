@@ -6,6 +6,7 @@ interface Props {
   label?: string;
   variant?: 'button-primary' | 'button-outline' | 'inline';
   size?: 'sm' | 'md' | 'lg';
+  customColor?: string;
   class?: string;
 }
 
@@ -14,19 +15,15 @@ const {
   label,
   variant = 'button-primary',
   size = 'md',
+  customColor,
   class: className = '',
 } = Astro.props;
 
 const href = buildAffiliateUrl(affiliateId);
 const displayLabel = label ?? getAffiliateLabel(affiliateId);
 
-const buttonBase = 'inline-flex items-center justify-center gap-2 font-semibold rounded-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple';
-
-const variantClasses = {
-  'button-primary': `${buttonBase} bg-brand-gradient text-white hover:opacity-90 active:scale-[0.98]`,
-  'button-outline': `${buttonBase} border border-brand-purple text-brand-purple hover:bg-brand-purple/10`,
-  inline: 'text-brand-purple hover:text-brand-pink underline underline-offset-2 transition-colors font-medium',
-};
+const buttonBase =
+  'inline-flex items-center justify-center gap-2 font-semibold rounded-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg active:scale-[0.98]';
 
 const sizeClasses = {
   sm: 'px-3.5 py-2 text-sm',
@@ -34,10 +31,31 @@ const sizeClasses = {
   lg: 'px-7 py-3.5 text-base',
 };
 
+// Quand customColor est fourni on utilise un style inline plutôt que la classe gradient
+const hasCustomColor = Boolean(customColor);
+
+const variantClasses = {
+  'button-primary': hasCustomColor
+    ? `${buttonBase} text-white hover:opacity-90`
+    : `${buttonBase} bg-brand-gradient text-white hover:opacity-90`,
+  'button-outline': hasCustomColor
+    ? `${buttonBase} border-2 bg-transparent hover:opacity-90`
+    : `${buttonBase} border border-brand-purple text-brand-purple hover:bg-brand-purple/10`,
+  inline: 'transition-colors font-medium underline underline-offset-2',
+};
+
 const classes =
   variant === 'inline'
     ? [variantClasses.inline, className].join(' ')
     : [variantClasses[variant], sizeClasses[size], className].join(' ');
+
+const inlineStyle = hasCustomColor
+  ? variant === 'button-primary'
+    ? `background-color: ${customColor}; focus-visible-ring-color: ${customColor};`
+    : variant === 'button-outline'
+      ? `border-color: ${customColor}; color: ${customColor};`
+      : `color: ${customColor};`
+  : undefined;
 ---
 
 <a
@@ -45,6 +63,7 @@ const classes =
   rel="nofollow sponsored noopener"
   target="_blank"
   class={classes}
+  style={inlineStyle}
   aria-label={`${displayLabel} (lien affilié, s'ouvre dans un nouvel onglet)`}
 >
   {displayLabel}
