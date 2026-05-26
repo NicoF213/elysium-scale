@@ -9,7 +9,7 @@ export const siteConfig = {
   email: 'contact@elysiumscale.com',
   social: {
     twitter: 'https://twitter.com/elysiumscale',
-    youtube: '',
+    youtube: 'https://www.youtube.com/@elysiumscale',
   },
   navigation: [
     { label: 'Accueil', href: '/' },
