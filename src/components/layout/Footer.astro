@@ -1,0 +1,70 @@
+---
+import { siteConfig } from '../../config/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-dark-border/50 bg-dark-surface/30 mt-20">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Top section -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+      <!-- Brand -->
+      <div class="lg:col-span-1">
+        <a href="/" class="flex items-center gap-3 mb-4">
+          <img src="/logo.png" alt={`Logo ${siteConfig.name}`} width="36" height="36" class="rounded-xl" />
+          <span class="font-bold text-text-primary">{siteConfig.name}</span>
+        </a>
+        <p class="text-sm text-text-muted leading-relaxed">
+          {siteConfig.tagline}
+        </p>
+      </div>
+
+      <!-- Links -->
+      {siteConfig.footerLinks.map((group) => (
+        <div>
+          <h3 class="text-sm font-semibold text-text-primary mb-3">{group.heading}</h3>
+          <ul class="space-y-2">
+            {group.links.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-sm text-text-muted hover:text-text-secondary transition-colors"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <!-- Affiliate disclosure -->
+    <div class="border-t border-dark-border/50 pt-8 mb-6">
+      <p class="text-xs text-text-muted leading-relaxed max-w-3xl">
+        <strong class="text-text-secondary">Divulgation d'affiliation :</strong> Elysium Scale participe à des programmes
+        d'affiliation. Certains liens sur ce site sont des liens affiliés, ce qui signifie que nous pouvons
+        percevoir une commission si vous effectuez un achat via ces liens, sans coût supplémentaire pour vous.
+        Nos avis restent indépendants et objectifs.
+      </p>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-dark-border/30">
+      <p class="text-xs text-text-muted">
+        © {year} {siteConfig.name}. Tous droits réservés.
+      </p>
+      <div class="flex items-center gap-4">
+        <a href="/mentions-legales" class="text-xs text-text-muted hover:text-text-secondary transition-colors">
+          Mentions légales
+        </a>
+        <a href="/confidentialite" class="text-xs text-text-muted hover:text-text-secondary transition-colors">
+          Confidentialité
+        </a>
+        <a href="/cookies" class="text-xs text-text-muted hover:text-text-secondary transition-colors">
+          Cookies
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,40 @@
+---
+import { getCollection } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import LatestArticles from '../../components/sections/LatestArticles.astro';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles', ({ data }) => !data.draft);
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = await article.render();
+---
+
+<ArticleLayout
+  title={article.data.title}
+  description={article.data.description}
+  publishDate={article.data.publishDate}
+  updatedDate={article.data.updatedDate}
+  author={article.data.author}
+  category={article.data.category}
+  tags={article.data.tags}
+  image={article.data.image}
+  imageAlt={article.data.imageAlt}
+  hasAffiliateLinks={true}
+>
+  <Content />
+</ArticleLayout>
+
+<div class="border-t border-dark-border/50">
+  <LatestArticles
+    title="Articles similaires"
+    subtitle="D'autres articles qui pourraient vous intéresser"
+    limit={3}
+    excludeSlug={article.slug}
+  />
+</div>

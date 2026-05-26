@@ -1,0 +1,58 @@
+---
+import { buildAffiliateUrl, getAffiliateLabel } from '../../utils/buildAffiliateUrl';
+
+interface Props {
+  affiliateId: string;
+  label?: string;
+  variant?: 'button-primary' | 'button-outline' | 'inline';
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+}
+
+const {
+  affiliateId,
+  label,
+  variant = 'button-primary',
+  size = 'md',
+  class: className = '',
+} = Astro.props;
+
+const href = buildAffiliateUrl(affiliateId);
+const displayLabel = label ?? getAffiliateLabel(affiliateId);
+
+const buttonBase = 'inline-flex items-center justify-center gap-2 font-semibold rounded-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple';
+
+const variantClasses = {
+  'button-primary': `${buttonBase} bg-brand-gradient text-white hover:opacity-90 active:scale-[0.98]`,
+  'button-outline': `${buttonBase} border border-brand-purple text-brand-purple hover:bg-brand-purple/10`,
+  inline: 'text-brand-purple hover:text-brand-pink underline underline-offset-2 transition-colors font-medium',
+};
+
+const sizeClasses = {
+  sm: 'px-3.5 py-2 text-sm',
+  md: 'px-5 py-2.5 text-sm',
+  lg: 'px-7 py-3.5 text-base',
+};
+
+const classes =
+  variant === 'inline'
+    ? [variantClasses.inline, className].join(' ')
+    : [variantClasses[variant], sizeClasses[size], className].join(' ');
+---
+
+<a
+  href={href}
+  rel="nofollow sponsored noopener"
+  target="_blank"
+  class={classes}
+  aria-label={`${displayLabel} (lien affilié, s'ouvre dans un nouvel onglet)`}
+>
+  {displayLabel}
+  {variant !== 'inline' && (
+    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+      <polyline points="15 3 21 3 21 9" />
+      <line x1="10" y1="14" x2="21" y2="3" />
+    </svg>
+  )}
+</a>

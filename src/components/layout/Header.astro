@@ -1,0 +1,102 @@
+---
+import Navigation from './Navigation.astro';
+import { siteConfig } from '../../config/site';
+
+const currentPath = Astro.url.pathname;
+---
+
+<header
+  class="sticky top-0 z-50 w-full border-b border-dark-border/50 bg-dark-bg/80 backdrop-blur-xl"
+>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex h-16 items-center justify-between">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-3 group" aria-label={siteConfig.name}>
+        <img
+          src="/logo.png"
+          alt={`Logo ${siteConfig.name}`}
+          width="40"
+          height="40"
+          class="rounded-xl transition-transform duration-300 group-hover:scale-105"
+        />
+        <span class="text-lg font-bold text-text-primary hidden sm:block">
+          {siteConfig.name}
+        </span>
+      </a>
+
+      <!-- Navigation desktop -->
+      <div class="hidden md:block">
+        <Navigation currentPath={currentPath} />
+      </div>
+
+      <!-- CTA -->
+      <div class="flex items-center gap-3">
+        <a
+          href="/produits"
+          class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-xl bg-brand-gradient text-white transition-opacity duration-200 hover:opacity-90"
+        >
+          Voir les produits
+        </a>
+
+        <!-- Burger mobile -->
+        <button
+          id="menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Ouvrir le menu"
+          class="md:hidden p-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-dark-surface transition-colors"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path id="icon-open" d="M4 6h16M4 12h16M4 18h16" />
+            <path id="icon-close" class="hidden" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menu mobile -->
+  <div id="mobile-menu" class="hidden md:hidden border-t border-dark-border/50">
+    <div class="mx-auto max-w-7xl px-4 py-4 flex flex-col gap-1">
+      {siteConfig.navigation.map((item) => {
+        const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
+        return (
+          <a
+            href={item.href}
+            class:list={[
+              'px-4 py-3 text-sm font-medium rounded-xl transition-colors',
+              isActive
+                ? 'text-text-primary bg-dark-surface-2'
+                : 'text-text-secondary hover:text-text-primary hover:bg-dark-surface',
+            ]}
+          >
+            {item.label}
+          </a>
+        );
+      })}
+      <a
+        href="/produits"
+        class="mt-2 px-4 py-3 text-sm font-semibold rounded-xl bg-brand-gradient text-white text-center"
+      >
+        Voir les produits
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('icon-open');
+  const iconClose = document.getElementById('icon-close');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = menu?.classList.contains('hidden') === false;
+    menu?.classList.toggle('hidden');
+    iconOpen?.classList.toggle('hidden');
+    iconClose?.classList.toggle('hidden');
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+    toggle.setAttribute('aria-label', isOpen ? 'Ouvrir le menu' : 'Fermer le menu');
+  });
+</script>

@@ -1,0 +1,28 @@
+---
+interface Props {
+  variant?: 'purple' | 'blue' | 'pink' | 'cyan' | 'success' | 'warning' | 'muted';
+  size?: 'sm' | 'md';
+  class?: string;
+}
+
+const { variant = 'purple', size = 'sm', class: className = '' } = Astro.props;
+
+const variantClasses = {
+  purple: 'bg-brand-purple/20 text-brand-purple border border-brand-purple/30',
+  blue: 'bg-brand-blue/20 text-brand-blue border border-brand-blue/30',
+  pink: 'bg-brand-pink/20 text-brand-pink border border-brand-pink/30',
+  cyan: 'bg-brand-cyan/20 text-brand-cyan border border-brand-cyan/30',
+  success: 'bg-success/20 text-success border border-success/30',
+  warning: 'bg-warning/20 text-warning border border-warning/30',
+  muted: 'bg-dark-surface text-text-muted border border-dark-border',
+};
+
+const sizeClasses = {
+  sm: 'px-2 py-0.5 text-xs',
+  md: 'px-3 py-1 text-sm',
+};
+---
+
+<span class:list={['inline-flex items-center font-medium rounded-full', variantClasses[variant], sizeClasses[size], className]}>
+  <slot />
+</span>

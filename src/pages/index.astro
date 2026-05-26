@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSection from '../components/sections/HeroSection.astro';
+import FeaturedProducts from '../components/sections/FeaturedProducts.astro';
+import LatestArticles from '../components/sections/LatestArticles.astro';
+import FAQSection from '../components/sections/FAQSection.astro';
+import { siteConfig } from '../config/site';
+
+const faqItems = [
+  {
+    question: 'Comment Elysium Scale sélectionne-t-il les produits recommandés ?',
+    answer:
+      'Chaque produit est testé de manière indépendante par notre équipe. Nous évaluons les fonctionnalités, la performance, le rapport qualité-prix et le support client avant toute recommandation.',
+  },
+  {
+    question: 'Les avis sont-ils vraiment indépendants ?',
+    answer:
+      'Oui. Bien que nous percevions une commission sur les liens affiliés, nos recommandations sont basées uniquement sur la qualité réelle des produits. Un produit médiocre ne sera jamais recommandé, même s\'il offre une meilleure commission.',
+  },
+  {
+    question: "Les liens affiliés ont-ils un coût pour les lecteurs ?",
+    answer:
+      'Non, utiliser nos liens affiliés ne vous coûte rien de plus. Le prix que vous payez est identique à celui que vous obtiendriez en allant directement sur le site. La commission est payée par le marchand, pas par vous.',
+  },
+  {
+    question: 'Comment puis-je suggérer un produit à tester ?',
+    answer:
+      `N'hésitez pas à nous contacter via notre page de contact. Nous lisons toutes les suggestions et les intégrons dans notre calendrier de test si elles correspondent à notre audience.`,
+  },
+];
+---
+
+<BaseLayout
+  title={siteConfig.name}
+  description={siteConfig.description}
+>
+  <HeroSection
+    badge="Comparatifs indépendants"
+    title="Les meilleurs outils,"
+    titleHighlight="soigneusement choisis"
+    subtitle={siteConfig.description}
+    ctaLabel="Explorer les produits"
+    ctaHref="/produits"
+    secondaryCtaLabel="Lire le blog"
+    secondaryCtaHref="/blog"
+  />
+
+  <!-- Divider -->
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="h-px bg-gradient-to-r from-transparent via-dark-border to-transparent" aria-hidden="true" />
+  </div>
+
+  <FeaturedProducts title="Sélection du moment" subtitle="Les produits qui ont retenu notre attention ce mois-ci" />
+
+  <!-- Divider -->
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="h-px bg-gradient-to-r from-transparent via-dark-border to-transparent" aria-hidden="true" />
+  </div>
+
+  <LatestArticles />
+
+  <!-- CTA banner -->
+  <section class="py-16">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <div class="relative overflow-hidden rounded-3xl bg-brand-gradient p-8 md:p-12 text-center">
+<h2 class="relative text-3xl md:text-4xl font-bold text-white mb-4">
+          Ne manquez aucune recommandation
+        </h2>
+        <p class="relative text-white/80 mb-8 max-w-md mx-auto">
+          Restez informé des meilleurs outils et offres sélectionnés par notre équipe.
+        </p>
+        <a
+          href="/blog"
+          class="relative inline-flex items-center gap-2 px-7 py-3.5 bg-white text-brand-purple font-semibold rounded-xl hover:bg-white/90 transition-colors"
+        >
+          Découvrir le blog
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <FAQSection items={faqItems} title="Vos questions, nos réponses" />
+</BaseLayout>

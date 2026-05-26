@@ -1,0 +1,34 @@
+---
+interface Props {
+  href?: string;
+  hoverable?: boolean;
+  class?: string;
+  padding?: 'none' | 'sm' | 'md' | 'lg';
+}
+
+const { href, hoverable = true, class: className = '', padding = 'md' } = Astro.props;
+
+const paddingClasses = {
+  none: '',
+  sm: 'p-4',
+  md: 'p-5 md:p-6',
+  lg: 'p-6 md:p-8',
+};
+
+const baseClasses = [
+  'rounded-2xl border border-dark-border bg-dark-surface/50',
+  paddingClasses[padding],
+  hoverable ? 'transition-all duration-300 card-glow-hover hover:border-brand-purple/40 hover:-translate-y-0.5' : '',
+  className,
+].join(' ');
+---
+
+{href ? (
+  <a href={href} class={baseClasses}>
+    <slot />
+  </a>
+) : (
+  <div class={baseClasses}>
+    <slot />
+  </div>
+)}

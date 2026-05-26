@@ -1,0 +1,106 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Card from '../../components/ui/Card.astro';
+import Badge from '../../components/ui/Badge.astro';
+import StarRating from '../../components/ui/StarRating.astro';
+import AffiliateLink from '../../components/ui/AffiliateLink.astro';
+
+const allProducts = await getCollection('products');
+const sorted = allProducts.sort((a, b) => {
+  if (a.data.featured && !b.data.featured) return -1;
+  if (!a.data.featured && b.data.featured) return 1;
+  return b.data.rating - a.data.rating;
+});
+
+const categories = [...new Set(sorted.map((p) => p.data.category))];
+---
+
+<BaseLayout
+  title="Produits recommandés"
+  description="Découvrez notre sélection de produits et services testés et approuvés par l'équipe Elysium Scale."
+>
+  <!-- Page header -->
+  <div class="relative overflow-hidden pt-16 pb-12">
+    <div class="absolute inset-0 -z-10" aria-hidden="true">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-brand-purple/10 blur-[100px]" />
+    </div>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl">
+        <Badge variant="purple" size="md" class="mb-4">Produits</Badge>
+        <h1 class="text-4xl sm:text-5xl font-bold text-text-primary mb-4">
+          Nos recommandations
+        </h1>
+        <p class="text-lg text-text-secondary">
+          Des produits sélectionnés après tests rigoureux. Que le meilleur gagne.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-20">
+    <!-- Category filters -->
+    {categories.length > 1 && (
+      <div class="flex flex-wrap gap-2 mb-10">
+        <span class="text-sm font-medium text-text-muted self-center mr-2">Catégories :</span>
+        {categories.map((cat) => (
+          <span class="px-3 py-1.5 text-sm text-text-secondary bg-dark-surface border border-dark-border rounded-full">
+            {cat}
+          </span>
+        ))}
+      </div>
+    )}
+
+    {sorted.length === 0 ? (
+      <div class="text-center py-20 text-text-muted">
+        <p>Aucun produit disponible pour l'instant. Revenez bientôt !</p>
+      </div>
+    ) : (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {sorted.map((product) => (
+          <Card hoverable padding="none">
+            <div class="p-6 flex flex-col h-full">
+              <div class="flex items-start justify-between mb-4">
+                <Badge variant="purple">{product.data.category}</Badge>
+                {product.data.featured && <Badge variant="pink">⭐ Top choix</Badge>}
+              </div>
+
+              <h2 class="text-lg font-bold text-text-primary mb-2">{product.data.name}</h2>
+              <StarRating rating={product.data.rating} size="sm" />
+
+              <p class="mt-3 text-sm text-text-secondary line-clamp-3 flex-1">
+                {product.data.description}
+              </p>
+
+              <ul class="mt-4 space-y-1.5">
+                {product.data.pros.slice(0, 3).map((pro) => (
+                  <li class="flex items-center gap-2 text-sm text-text-secondary">
+                    <svg class="w-3.5 h-3.5 text-success shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                      <path d="M20 6L9 17l-5-5" />
+                    </svg>
+                    {pro}
+                  </li>
+                ))}
+              </ul>
+
+              <div class="mt-6 pt-4 border-t border-dark-border flex items-center justify-between gap-3">
+                {product.data.price && (
+                  <span class="font-semibold text-text-primary">{product.data.price}</span>
+                )}
+                <div class="flex items-center gap-2 ml-auto">
+                  <a
+                    href={`/produits/${product.slug}`}
+                    class="text-sm text-text-secondary hover:text-text-primary transition-colors"
+                  >
+                    Voir l'avis
+                  </a>
+                  <AffiliateLink affiliateId={product.data.affiliateId} size="sm" />
+                </div>
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    )}
+  </div>
+</BaseLayout>

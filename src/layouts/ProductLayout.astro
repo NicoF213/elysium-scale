@@ -1,0 +1,147 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Badge from '../components/ui/Badge.astro';
+import StarRating from '../components/ui/StarRating.astro';
+import AffiliateLink from '../components/ui/AffiliateLink.astro';
+import AffiliateDisclosure from '../components/ui/AffiliateDisclosure.astro';
+
+interface Props {
+  name: string;
+  description: string;
+  category: string;
+  rating: number;
+  pros: string[];
+  cons: string[];
+  affiliateId: string;
+  price?: string;
+  image?: string;
+  imageAlt?: string;
+}
+
+const {
+  name,
+  description,
+  category,
+  rating,
+  pros,
+  cons,
+  affiliateId,
+  price,
+  image,
+  imageAlt,
+} = Astro.props;
+---
+
+<BaseLayout
+  title={`Avis ${name} — Test et comparatif`}
+  description={description}
+  image={image}
+  imageAlt={imageAlt}
+  type="article"
+>
+  <div class="py-12">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <nav aria-label="Fil d'Ariane" class="mb-8">
+        <ol class="flex items-center gap-2 text-sm text-text-muted">
+          <li><a href="/" class="hover:text-text-secondary transition-colors">Accueil</a></li>
+          <li aria-hidden="true"><span class="text-dark-border">/</span></li>
+          <li><a href="/produits" class="hover:text-text-secondary transition-colors">Produits</a></li>
+          <li aria-hidden="true"><span class="text-dark-border">/</span></li>
+          <li class="text-text-secondary truncate" aria-current="page">{name}</li>
+        </ol>
+      </nav>
+
+      <!-- Product hero -->
+      <div class="rounded-2xl border border-dark-border bg-dark-surface/50 p-6 md:p-8 mb-8">
+        <div class="flex flex-col md:flex-row gap-6">
+          {image && (
+            <div class="shrink-0">
+              <img
+                src={image}
+                alt={imageAlt ?? name}
+                width="160"
+                height="160"
+                class="w-32 h-32 md:w-40 md:h-40 object-contain rounded-xl bg-dark-bg p-2"
+              />
+            </div>
+          )}
+          <div class="flex-1">
+            <Badge variant="blue" class="mb-3">{category}</Badge>
+            <h1 class="text-3xl md:text-4xl font-bold text-text-primary mb-3">{name}</h1>
+            <div class="flex items-center gap-4 mb-4">
+              <StarRating rating={rating} size="lg" />
+              <span class="text-text-muted text-sm">{rating}/5</span>
+            </div>
+            <p class="text-text-secondary mb-6">{description}</p>
+            <div class="flex items-center gap-4 flex-wrap">
+              {price && (
+                <span class="text-2xl font-bold text-text-primary">{price}</span>
+              )}
+              <AffiliateLink affiliateId={affiliateId} size="lg" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Disclosure -->
+      <div class="mb-8">
+        <AffiliateDisclosure />
+      </div>
+
+      <!-- Pros / Cons -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div class="rounded-2xl border border-success/20 bg-success/5 p-6">
+          <h2 class="flex items-center gap-2 font-bold text-success mb-4">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <path d="M20 6L9 17l-5-5" />
+            </svg>
+            Points forts
+          </h2>
+          <ul class="space-y-2.5">
+            {pros.map((pro) => (
+              <li class="flex items-start gap-2 text-sm text-text-secondary">
+                <svg class="w-4 h-4 text-success shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg>
+                {pro}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="rounded-2xl border border-danger/20 bg-danger/5 p-6">
+          <h2 class="flex items-center gap-2 font-bold text-danger mb-4">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+            Points faibles
+          </h2>
+          <ul class="space-y-2.5">
+            {cons.map((con) => (
+              <li class="flex items-start gap-2 text-sm text-text-secondary">
+                <svg class="w-4 h-4 text-danger shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+                {con}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Full review content -->
+      <div class="prose-elysium">
+        <slot />
+      </div>
+
+      <!-- Bottom CTA -->
+      <div class="mt-10 rounded-2xl bg-brand-gradient-subtle border border-brand-purple/20 p-8 text-center">
+        <h3 class="text-xl font-bold text-text-primary mb-2">Prêt à essayer {name} ?</h3>
+        <p class="text-text-secondary mb-6 text-sm">
+          Accédez à l'offre via notre lien partenaire.
+        </p>
+        <AffiliateLink affiliateId={affiliateId} size="lg" />
+      </div>
+    </div>
+  </div>
+</BaseLayout>

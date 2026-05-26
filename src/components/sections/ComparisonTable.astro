@@ -1,0 +1,117 @@
+---
+import AffiliateLink from '../ui/AffiliateLink.astro';
+import StarRating from '../ui/StarRating.astro';
+
+interface ComparisonProduct {
+  name: string;
+  affiliateId: string;
+  rating: number;
+  price: string;
+  features: Record<string, boolean | string>;
+  recommended?: boolean;
+}
+
+interface Props {
+  title?: string;
+  products: ComparisonProduct[];
+  featureLabels: Record<string, string>;
+}
+
+const { title = 'Comparatif', products, featureLabels } = Astro.props;
+const featureKeys = Object.keys(featureLabels);
+---
+
+<section class="py-12">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    {title && (
+      <h2 class="text-3xl font-bold text-text-primary text-center mb-10">{title}</h2>
+    )}
+
+    <div class="overflow-x-auto rounded-2xl border border-dark-border">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-dark-border bg-dark-surface">
+            <th class="px-4 py-4 text-left font-semibold text-text-secondary w-40">Critère</th>
+            {products.map((p) => (
+              <th class:list={[
+                'px-4 py-4 text-center font-semibold',
+                p.recommended ? 'text-brand-purple' : 'text-text-primary',
+              ]}>
+                <div class="flex flex-col items-center gap-1">
+                  {p.recommended && (
+                    <span class="text-xs px-2 py-0.5 rounded-full bg-brand-purple/20 text-brand-purple border border-brand-purple/30">
+                      Recommandé
+                    </span>
+                  )}
+                  {p.name}
+                </div>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Rating row -->
+          <tr class="border-b border-dark-border/50">
+            <td class="px-4 py-3.5 text-text-muted font-medium">Note</td>
+            {products.map((p) => (
+              <td class="px-4 py-3.5 text-center">
+                <div class="flex justify-center">
+                  <StarRating rating={p.rating} size="sm" />
+                </div>
+              </td>
+            ))}
+          </tr>
+
+          <!-- Price row -->
+          <tr class="border-b border-dark-border/50">
+            <td class="px-4 py-3.5 text-text-muted font-medium">Prix</td>
+            {products.map((p) => (
+              <td class="px-4 py-3.5 text-center font-semibold text-text-primary">{p.price}</td>
+            ))}
+          </tr>
+
+          <!-- Feature rows -->
+          {featureKeys.map((key, i) => (
+            <tr class:list={['border-b border-dark-border/50', i % 2 === 0 ? '' : 'bg-dark-surface/30']}>
+              <td class="px-4 py-3.5 text-text-muted">{featureLabels[key]}</td>
+              {products.map((p) => {
+                const val = p.features[key];
+                return (
+                  <td class="px-4 py-3.5 text-center">
+                    {typeof val === 'boolean' ? (
+                      val ? (
+                        <svg class="w-5 h-5 text-success mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-label="Oui">
+                          <path d="M20 6L9 17l-5-5" />
+                        </svg>
+                      ) : (
+                        <svg class="w-5 h-5 text-danger mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-label="Non">
+                          <path d="M18 6L6 18M6 6l12 12" />
+                        </svg>
+                      )
+                    ) : (
+                      <span class="text-text-secondary">{val}</span>
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+
+          <!-- CTA row -->
+          <tr>
+            <td class="px-4 py-4 text-text-muted font-medium">Accéder</td>
+            {products.map((p) => (
+              <td class="px-4 py-4 text-center">
+                <AffiliateLink
+                  affiliateId={p.affiliateId}
+                  size="sm"
+                  variant={p.recommended ? 'button-primary' : 'button-outline'}
+                />
+              </td>
+            ))}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

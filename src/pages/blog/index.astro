@@ -1,0 +1,95 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Card from '../../components/ui/Card.astro';
+import Badge from '../../components/ui/Badge.astro';
+import { formatDateShort } from '../../utils/formatPrice';
+
+const allArticles = await getCollection('articles', ({ data }) => !data.draft);
+const sorted = allArticles.sort(
+  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
+);
+
+const categories = [...new Set(sorted.map((a) => a.data.category))];
+---
+
+<BaseLayout
+  title="Blog"
+  description="Guides, comparatifs et conseils pour choisir les meilleurs outils et services en ligne."
+>
+  <!-- Page header -->
+  <div class="relative overflow-hidden pt-16 pb-12">
+    <div class="absolute inset-0 -z-10" aria-hidden="true">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-brand-blue/10 blur-[100px]" />
+    </div>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl">
+        <Badge variant="blue" size="md" class="mb-4">Blog</Badge>
+        <h1 class="text-4xl sm:text-5xl font-bold text-text-primary mb-4">
+          Guides & Comparatifs
+        </h1>
+        <p class="text-lg text-text-secondary">
+          Des articles approfondis pour vous aider à faire les meilleurs choix.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-20">
+    <!-- Category filters -->
+    {categories.length > 1 && (
+      <div class="flex flex-wrap gap-2 mb-10">
+        <span class="text-sm font-medium text-text-muted self-center mr-2">Catégories :</span>
+        {categories.map((cat) => (
+          <span class="px-3 py-1.5 text-sm text-text-secondary bg-dark-surface border border-dark-border rounded-full cursor-default">
+            {cat}
+          </span>
+        ))}
+      </div>
+    )}
+
+    {sorted.length === 0 ? (
+      <div class="text-center py-20 text-text-muted">
+        <p>Aucun article publié pour l'instant. Revenez bientôt !</p>
+      </div>
+    ) : (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {sorted.map((article) => (
+          <Card href={`/blog/${article.slug}`} hoverable padding="none">
+            <article>
+              {article.data.image && (
+                <div class="aspect-[16/9] overflow-hidden rounded-t-2xl">
+                  <img
+                    src={article.data.image}
+                    alt={article.data.imageAlt ?? article.data.title}
+                    width="400"
+                    height="225"
+                    loading="lazy"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              <div class="p-6">
+                <div class="flex items-center gap-3 mb-3">
+                  <Badge variant="blue">{article.data.category}</Badge>
+                  <time datetime={article.data.publishDate.toISOString()} class="text-xs text-text-muted">
+                    {formatDateShort(article.data.publishDate)}
+                  </time>
+                </div>
+                <h2 class="font-bold text-text-primary mb-2 line-clamp-2">
+                  {article.data.title}
+                </h2>
+                <p class="text-sm text-text-secondary line-clamp-3">{article.data.description}</p>
+                <div class="mt-4 flex flex-wrap gap-1.5">
+                  {article.data.tags.slice(0, 3).map((tag) => (
+                    <span class="text-xs text-text-muted bg-dark-surface px-2 py-0.5 rounded-full">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </article>
+          </Card>
+        ))}
+      </div>
+    )}
+  </div>
+</BaseLayout>

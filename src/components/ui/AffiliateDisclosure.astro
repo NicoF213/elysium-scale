@@ -1,0 +1,33 @@
+---
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+{compact ? (
+  <p class="text-xs text-text-muted italic border-l-2 border-dark-border pl-3 py-1">
+    Certains liens de cet article sont des liens affiliés. Nous percevons une commission en cas d'achat,
+    sans coût supplémentaire pour vous.
+  </p>
+) : (
+  <aside
+    class="flex gap-3 p-4 rounded-xl bg-brand-purple/10 border border-brand-purple/20 text-sm text-text-secondary"
+    aria-label="Divulgation d'affiliation"
+  >
+    <svg class="w-5 h-5 text-brand-purple shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 16v-4M12 8h.01" />
+    </svg>
+    <div>
+      <strong class="text-text-primary block mb-0.5">Information d'affiliation</strong>
+      Cet article contient des liens affiliés. Si vous effectuez un achat via ces liens, Elysium Scale
+      peut percevoir une commission, sans coût supplémentaire pour vous. Nos recommandations restent
+      indépendantes de ces partenariats.
+      <a href="/mentions-legales" class="text-brand-purple hover:text-brand-pink ml-1 underline underline-offset-2">
+        En savoir plus
+      </a>
+    </div>
+  </aside>
+)}
