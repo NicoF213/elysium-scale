@@ -33,7 +33,9 @@ ok "Branche main, working tree propre"
 
 # ── 2. Build Astro ─────────────────────────────────────────
 log "Build Astro en cours..."
-npm run build
+# Résoudre le chemin du projet (répertoire parent de scripts/)
+PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+"$PROJECT_DIR/node_modules/.bin/astro" build --root "$PROJECT_DIR"
 ok "Build terminé → dist/"
 
 # ── 3. Mise à jour de la branche deploy via worktree ───────
