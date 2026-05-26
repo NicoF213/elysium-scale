@@ -9,7 +9,8 @@
     "astro": "astro",
     "check": "astro check",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "deploy": "bash scripts/deploy.sh"
   },
   "dependencies": {
     "astro": "^5.7.0",
