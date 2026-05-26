@@ -3,22 +3,30 @@ import { getCollection } from 'astro:content';
 import Card from '../ui/Card.astro';
 import Badge from '../ui/Badge.astro';
 import { formatDateShort } from '../../utils/formatPrice';
+import type { Lang } from '../../utils/i18n';
+import { useTranslations } from '../../utils/i18n';
 
 interface Props {
   limit?: number;
   title?: string;
   subtitle?: string;
   excludeSlug?: string;
+  lang?: Lang;
 }
 
+const { limit = 3, excludeSlug, lang = 'fr' } = Astro.props;
+const t = useTranslations(lang);
+
 const {
-  limit = 3,
-  title = 'Derniers articles',
-  subtitle = 'Guides, comparatifs et analyses pour faire les meilleurs choix',
-  excludeSlug,
+  title = t('blog.heading'),
+  subtitle = lang === 'fr'
+    ? 'Guides, comparatifs et analyses pour faire les meilleurs choix'
+    : 'Guides, comparisons and analysis to help you make the best decisions',
 } = Astro.props;
 
-const allArticles = await getCollection('articles', ({ data }) => !data.draft);
+const blogBase = lang === 'en' ? '/en/blog' : '/blog';
+
+const allArticles = await getCollection('articles', ({ data }) => !data.draft && data.lang === lang);
 const sorted = allArticles
   .filter((a) => a.slug !== excludeSlug)
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
@@ -35,7 +43,7 @@ const sorted = allArticles
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sorted.map((article) => (
-          <Card href={`/blog/${article.slug}`} hoverable padding="none">
+          <Card href={`${blogBase}/${article.slug}`} hoverable padding="none">
             <article>
               {article.data.image && (
                 <div class="aspect-[16/9] overflow-hidden rounded-t-2xl">
@@ -79,10 +87,10 @@ const sorted = allArticles
 
       <div class="text-center mt-10">
         <a
-          href="/blog"
+          href={blogBase}
           class="inline-flex items-center gap-2 text-sm font-medium text-brand-purple hover:text-brand-pink transition-colors"
         >
-          Voir tous les articles
+          {t('blog.all_articles')}
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>

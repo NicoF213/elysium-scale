@@ -1,9 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
-import ProductLayout from '../../layouts/ProductLayout.astro';
+import ProductLayout from '../../../layouts/ProductLayout.astro';
 
 export async function getStaticPaths() {
-  const products = await getCollection('products', ({ data }) => data.lang === 'fr');
+  const products = await getCollection('products', ({ data }) => data.lang === 'en');
   return products.map((product) => ({
     params: { slug: product.slug },
     props: { product },
@@ -26,7 +26,7 @@ const { Content } = await product.render();
   image={product.data.image}
   imageAlt={product.data.imageAlt}
   brandColor={product.data.brandColor}
-  lang={product.data.lang}
+  lang="en"
 >
   <Content />
 </ProductLayout>

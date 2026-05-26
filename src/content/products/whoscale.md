@@ -20,6 +20,7 @@ imageAlt: "Logo WhoScale"
 brandColor: "#F5620F"
 featured: true
 publishDate: 2025-01-20
+lang: fr
 ---
 
 ## WhoScale : l'œil dans le jeu des infopreneurs

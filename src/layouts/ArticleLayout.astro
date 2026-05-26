@@ -4,6 +4,8 @@ import Badge from '../components/ui/Badge.astro';
 import AffiliateDisclosure from '../components/ui/AffiliateDisclosure.astro';
 import { formatDate } from '../utils/formatPrice';
 import { siteConfig } from '../config/site';
+import type { Lang } from '../utils/i18n';
+import { useTranslations } from '../utils/i18n';
 
 interface Props {
   title: string;
@@ -16,6 +18,7 @@ interface Props {
   image?: string;
   imageAlt?: string;
   hasAffiliateLinks?: boolean;
+  lang?: Lang;
 }
 
 const {
@@ -29,8 +32,12 @@ const {
   image,
   imageAlt,
   hasAffiliateLinks = true,
+  lang = 'fr',
 } = Astro.props;
 
+const t = useTranslations(lang);
+const homeHref = lang === 'en' ? '/en' : '/';
+const blogHref = lang === 'en' ? '/en/blog' : '/blog';
 ---
 
 <BaseLayout
@@ -42,15 +49,16 @@ const {
   publishDate={publishDate}
   updatedDate={updatedDate}
   author={author}
+  lang={lang}
 >
   <article class="py-12">
     <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
       <!-- Breadcrumb -->
       <nav aria-label="Fil d'Ariane" class="mb-8">
         <ol class="flex items-center gap-2 text-sm text-text-muted">
-          <li><a href="/" class="hover:text-text-secondary transition-colors">Accueil</a></li>
+          <li><a href={homeHref} class="hover:text-text-secondary transition-colors">{t('bc.home')}</a></li>
           <li aria-hidden="true"><span class="text-dark-border">/</span></li>
-          <li><a href="/blog" class="hover:text-text-secondary transition-colors">Blog</a></li>
+          <li><a href={blogHref} class="hover:text-text-secondary transition-colors">{t('bc.blog')}</a></li>
           <li aria-hidden="true"><span class="text-dark-border">/</span></li>
           <li class="text-text-secondary truncate max-w-[200px]" aria-current="page">{title}</li>
         </ol>
@@ -72,16 +80,16 @@ const {
         <p class="text-lg text-text-secondary mb-6">{description}</p>
 
         <div class="flex items-center gap-4 text-sm text-text-muted border-t border-dark-border pt-5">
-          <span>Par <strong class="text-text-secondary">{author}</strong></span>
+          <span>{t('blog.by')} <strong class="text-text-secondary">{author}</strong></span>
           <span class="text-dark-border">·</span>
           <time datetime={publishDate.toISOString()}>
-            Publié le {formatDate(publishDate)}
+            {t('blog.published_on')} {formatDate(publishDate)}
           </time>
           {updatedDate && (
             <>
               <span class="text-dark-border">·</span>
               <time datetime={updatedDate.toISOString()}>
-                Mis à jour le {formatDate(updatedDate)}
+                {t('blog.updated_on')} {formatDate(updatedDate)}
               </time>
             </>
           )}
@@ -104,7 +112,7 @@ const {
       <!-- Affiliate disclosure -->
       {hasAffiliateLinks && (
         <div class="mb-8">
-          <AffiliateDisclosure />
+          <AffiliateDisclosure lang={lang} />
         </div>
       )}
 
@@ -116,7 +124,7 @@ const {
       <!-- Tags -->
       <div class="mt-10 pt-6 border-t border-dark-border">
         <div class="flex flex-wrap items-center gap-2">
-          <span class="text-sm text-text-muted">Tags :</span>
+          <span class="text-sm text-text-muted">{t('blog.tags')}</span>
           {tags.map((tag) => (
             <span class="text-xs text-text-secondary bg-dark-surface border border-dark-border px-3 py-1 rounded-full">
               {tag}

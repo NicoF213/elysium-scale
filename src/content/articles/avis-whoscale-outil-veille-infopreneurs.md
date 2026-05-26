@@ -9,6 +9,7 @@ tags: ["whoscale", "avis whoscale", "outil infopreneur", "veille concurrentielle
 image: "/images/whoscale-miniature.png"
 imageAlt: "WhoScale — l'outil de veille concurrentielle pour les infopreneurs"
 draft: false
+lang: fr
 ---
 
 <div style="background: linear-gradient(135deg, #F5620F 0%, #FF8C42 100%); border-radius: 16px; padding: 28px 32px; margin-bottom: 32px; display: flex; align-items: center; gap: 24px;">

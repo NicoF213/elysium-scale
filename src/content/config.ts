@@ -12,6 +12,7 @@ const articles = defineCollection({
     image: z.string().optional(),
     imageAlt: z.string().optional(),
     draft: z.boolean().default(false),
+    lang: z.enum(['fr', 'en']).default('fr'),
   }),
 });
 
@@ -30,6 +31,7 @@ const products = defineCollection({
     brandColor: z.string().optional(),
     featured: z.boolean().default(false),
     publishDate: z.date().optional(),
+    lang: z.enum(['fr', 'en']).default('fr'),
   }),
 });
 

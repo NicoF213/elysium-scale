@@ -1,17 +1,34 @@
 ---
 import { siteConfig } from '../../config/site';
+import type { Lang } from '../../utils/i18n';
 
 interface Props {
   currentPath?: string;
+  lang?: Lang;
 }
 
-const { currentPath = '/' } = Astro.props;
+const { currentPath = '/', lang = 'fr' } = Astro.props;
+const isEnglish = lang === 'en';
+
+// Build locale-aware nav items from siteConfig
+const navItems = siteConfig.navigation.map((item) => {
+  let href = item.href;
+  let label = item.label;
+  if (isEnglish) {
+    if (item.href === '/') { href = '/en'; label = 'Home'; }
+    else if (item.href === '/blog') { href = '/en/blog'; label = 'Blog'; }
+    else if (item.href === '/produits') { href = '/en/products'; label = 'Products'; }
+    else if (item.href === '/a-propos') { href = '/en/about'; label = 'About'; }
+  }
+  return { href, label };
+});
 ---
 
 <nav aria-label="Navigation principale">
   <ul class="flex items-center gap-1 md:gap-2">
-    {siteConfig.navigation.map((item) => {
-      const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
+    {navItems.map((item) => {
+      const isRoot = item.href === '/' || item.href === '/en';
+      const isActive = currentPath === item.href || (!isRoot && currentPath.startsWith(item.href));
       return (
         <li>
           <a

@@ -1,8 +1,21 @@
 ---
 import Navigation from './Navigation.astro';
 import { siteConfig } from '../../config/site';
+import { getLangFromUrl, getAlternateUrl, useTranslations } from '../../utils/i18n';
 
 const currentPath = Astro.url.pathname;
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
+
+// Language switcher target
+const alternateUrl = getAlternateUrl(currentPath, currentLang);
+const alternateLangLabel = t('lang.switch_label');
+const alternateLangAria = t('lang.switch_aria');
+
+// Nav paths depend on current language
+const isEnglish = currentLang === 'en';
+const productsHref = isEnglish ? '/en/products' : '/produits';
+const seeProductsLabel = t('nav.see_products');
 ---
 
 <header
@@ -11,7 +24,7 @@ const currentPath = Astro.url.pathname;
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="flex h-16 items-center justify-between">
       <!-- Logo -->
-      <a href="/" class="flex items-center gap-3 group" aria-label={siteConfig.name}>
+      <a href={isEnglish ? '/en' : '/'} class="flex items-center gap-3 group" aria-label={siteConfig.name}>
         <img
           src="/logo.png"
           alt={`Logo ${siteConfig.name}`}
@@ -26,10 +39,10 @@ const currentPath = Astro.url.pathname;
 
       <!-- Navigation desktop -->
       <div class="hidden md:block">
-        <Navigation currentPath={currentPath} />
+        <Navigation currentPath={currentPath} lang={currentLang} />
       </div>
 
-      <!-- CTA -->
+      <!-- CTA + language switcher -->
       <div class="flex items-center gap-3">
         <!-- YouTube -->
         {siteConfig.social.youtube && (
@@ -46,11 +59,20 @@ const currentPath = Astro.url.pathname;
           </a>
         )}
 
+        <!-- Language switcher -->
         <a
-          href="/produits"
+          href={alternateUrl}
+          aria-label={alternateLangAria}
+          class="hidden sm:inline-flex items-center px-2.5 py-1 text-xs font-semibold rounded-lg border border-dark-border text-text-muted hover:text-text-primary hover:border-dark-border/80 transition-colors duration-200"
+        >
+          {alternateLangLabel}
+        </a>
+
+        <a
+          href={productsHref}
           class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-xl bg-brand-gradient text-white transition-opacity duration-200 hover:opacity-90"
         >
-          Voir les produits
+          {seeProductsLabel}
         </a>
 
         <!-- Burger mobile -->
@@ -59,7 +81,7 @@ const currentPath = Astro.url.pathname;
           type="button"
           aria-expanded="false"
           aria-controls="mobile-menu"
-          aria-label="Ouvrir le menu"
+          aria-label={t('nav.open_menu')}
           class="md:hidden p-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-dark-surface transition-colors"
         >
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -75,10 +97,18 @@ const currentPath = Astro.url.pathname;
   <div id="mobile-menu" class="hidden md:hidden border-t border-dark-border/50">
     <div class="mx-auto max-w-7xl px-4 py-4 flex flex-col gap-1">
       {siteConfig.navigation.map((item) => {
-        const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
+        // Remap href for English if needed
+        const href = isEnglish
+          ? item.href === '/' ? '/en'
+            : item.href === '/blog' ? '/en/blog'
+            : item.href === '/produits' ? '/en/products'
+            : item.href === '/a-propos' ? '/en/about'
+            : item.href
+          : item.href;
+        const isActive = currentPath === href || (href !== '/' && href !== '/en' && currentPath.startsWith(href));
         return (
           <a
-            href={item.href}
+            href={href}
             class:list={[
               'px-4 py-3 text-sm font-medium rounded-xl transition-colors',
               isActive
@@ -86,15 +116,28 @@ const currentPath = Astro.url.pathname;
                 : 'text-text-secondary hover:text-text-primary hover:bg-dark-surface',
             ]}
           >
-            {item.label}
+            {isEnglish
+              ? item.href === '/' ? 'Home'
+                : item.href === '/blog' ? 'Blog'
+                : item.href === '/produits' ? 'Products'
+                : item.href === '/a-propos' ? 'About'
+                : item.label
+              : item.label}
           </a>
         );
       })}
+      <!-- Language switcher (mobile) -->
       <a
-        href="/produits"
+        href={alternateUrl}
+        class="px-4 py-3 text-sm font-medium rounded-xl text-text-secondary hover:text-text-primary hover:bg-dark-surface transition-colors"
+      >
+        {alternateLangLabel} — {alternateLangAria}
+      </a>
+      <a
+        href={productsHref}
         class="mt-2 px-4 py-3 text-sm font-semibold rounded-xl bg-brand-gradient text-white text-center"
       >
-        Voir les produits
+        {seeProductsLabel}
       </a>
     </div>
   </div>

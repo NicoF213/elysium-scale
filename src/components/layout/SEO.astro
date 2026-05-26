@@ -2,8 +2,12 @@
 import type { SeoProps } from '../../utils/seo';
 import { buildPageTitle, buildCanonicalUrl, buildOgImageUrl } from '../../utils/seo';
 import { siteConfig } from '../../config/site';
+import type { Lang } from '../../utils/i18n';
+import { getAlternateUrl } from '../../utils/i18n';
 
-interface Props extends SeoProps {}
+interface Props extends SeoProps {
+  lang?: Lang;
+}
 
 const {
   title,
@@ -16,17 +20,33 @@ const {
   publishDate,
   updatedDate,
   author = siteConfig.author,
+  lang = 'fr',
 } = Astro.props;
 
 const pageTitle = buildPageTitle(title);
 const canonicalUrl = canonical ?? buildCanonicalUrl(Astro.url.pathname);
 const ogImage = buildOgImageUrl(image);
+
+// hreflang: compute both FR and EN absolute URLs
+const siteUrl = siteConfig.url;
+const currentPath = Astro.url.pathname;
+const selfAbsolute = currentPath === '/' ? siteUrl : `${siteUrl}${currentPath}`;
+const alternateAbsolute = getAlternateUrl(currentPath, lang, siteUrl);
+const frUrl = lang === 'fr' ? selfAbsolute : alternateAbsolute;
+const enUrl = lang === 'en' ? selfAbsolute : alternateAbsolute;
+const ogLocale = lang === 'fr' ? 'fr_FR' : 'en_US';
+const ogLocaleAlt = lang === 'fr' ? 'en_US' : 'fr_FR';
 ---
 
 <title>{pageTitle}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalUrl} />
 {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<!-- hreflang alternates -->
+<link rel="alternate" hreflang="fr" href={frUrl} />
+<link rel="alternate" hreflang="en" href={enUrl} />
+<link rel="alternate" hreflang="x-default" href={frUrl} />
 
 <!-- Open Graph -->
 <meta property="og:type" content={type} />
@@ -36,7 +56,8 @@ const ogImage = buildOgImageUrl(image);
 <meta property="og:image" content={ogImage} />
 <meta property="og:image:alt" content={imageAlt ?? title} />
 <meta property="og:site_name" content={siteConfig.name} />
-<meta property="og:locale" content={siteConfig.locale} />
+<meta property="og:locale" content={ogLocale} />
+<meta property="og:locale:alternate" content={ogLocaleAlt} />
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />

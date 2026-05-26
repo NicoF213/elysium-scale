@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroSection from '../../components/sections/HeroSection.astro';
+import FeaturedProducts from '../../components/sections/FeaturedProducts.astro';
+import LatestArticles from '../../components/sections/LatestArticles.astro';
+import FAQSection from '../../components/sections/FAQSection.astro';
+import { siteConfig } from '../../config/site';
+
+const faqItems = [
+  {
+    question: 'How does Elysium Scale select recommended products?',
+    answer:
+      'Every product is independently tested by our team. We evaluate features, performance, value for money, and customer support before making any recommendation.',
+  },
+  {
+    question: 'Are the reviews truly independent?',
+    answer:
+      'Yes. Although we earn a commission on affiliate links, our recommendations are based solely on the actual quality of the products. A poor product will never be recommended, even if it offers a higher commission.',
+  },
+  {
+    question: 'Do affiliate links cost readers anything?',
+    answer:
+      'No, using our affiliate links costs you nothing extra. The price you pay is identical to what you would get by going directly to the site. The commission is paid by the merchant, not by you.',
+  },
+  {
+    question: 'How can I suggest a product to test?',
+    answer:
+      'Feel free to contact us via our contact page. We read all suggestions and include them in our testing schedule if they match our audience.',
+  },
+];
+---
+
+<BaseLayout
+  title={`${siteConfig.name} — Best tools, carefully chosen`}
+  description="Elysium Scale guides you to the best tools and services through detailed comparisons and expert guides."
+  lang="en"
+>
+  <HeroSection
+    badge="Independent reviews"
+    title="The best tools,"
+    titleHighlight="carefully chosen"
+    subtitle="Elysium Scale guides you to the best tools and services through detailed comparisons and expert guides."
+    ctaLabel="Explore products"
+    ctaHref="/en/products"
+    secondaryCtaLabel="Read the blog"
+    secondaryCtaHref="/en/blog"
+  />
+
+  <!-- Divider -->
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="h-px bg-gradient-to-r from-transparent via-dark-border to-transparent" aria-hidden="true" />
+  </div>
+
+  <FeaturedProducts
+    title="Editor's picks"
+    subtitle="The products that caught our attention this month"
+    lang="en"
+  />
+
+  <!-- Divider -->
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="h-px bg-gradient-to-r from-transparent via-dark-border to-transparent" aria-hidden="true" />
+  </div>
+
+  <LatestArticles lang="en" />
+
+  <!-- CTA banner -->
+  <section class="py-16">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <div class="relative overflow-hidden rounded-3xl bg-brand-gradient p-8 md:p-12 text-center">
+        <h2 class="relative text-3xl md:text-4xl font-bold text-white mb-4">
+          Don't miss any recommendation
+        </h2>
+        <p class="relative text-white/80 mb-8 max-w-md mx-auto">
+          Stay informed of the best tools and deals selected by our team.
+        </p>
+        <a
+          href="/en/blog"
+          class="relative inline-flex items-center gap-2 px-7 py-3.5 bg-white text-brand-purple font-semibold rounded-xl hover:bg-white/90 transition-colors"
+        >
+          Discover the blog
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <FAQSection items={faqItems} title="Your questions, our answers" />
+</BaseLayout>

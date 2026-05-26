@@ -1,10 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
-import ArticleLayout from '../../layouts/ArticleLayout.astro';
-import LatestArticles from '../../components/sections/LatestArticles.astro';
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+import LatestArticles from '../../../components/sections/LatestArticles.astro';
 
 export async function getStaticPaths() {
-  const articles = await getCollection('articles', ({ data }) => !data.draft && data.lang === 'fr');
+  const articles = await getCollection('articles', ({ data }) => !data.draft && data.lang === 'en');
   return articles.map((article) => ({
     params: { slug: article.slug },
     props: { article },
@@ -26,17 +26,17 @@ const { Content } = await article.render();
   image={article.data.image}
   imageAlt={article.data.imageAlt}
   hasAffiliateLinks={true}
-  lang={article.data.lang}
+  lang="en"
 >
   <Content />
 </ArticleLayout>
 
 <div class="border-t border-dark-border/50">
   <LatestArticles
-    title="Articles similaires"
-    subtitle="D'autres articles qui pourraient vous intéresser"
+    title="Similar articles"
+    subtitle="Other articles you might find useful"
     limit={3}
     excludeSlug={article.slug}
-    lang={article.data.lang}
+    lang="en"
   />
 </div>

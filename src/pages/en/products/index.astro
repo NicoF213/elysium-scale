@@ -1,12 +1,12 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Card from '../../components/ui/Card.astro';
-import Badge from '../../components/ui/Badge.astro';
-import StarRating from '../../components/ui/StarRating.astro';
-import AffiliateLink from '../../components/ui/AffiliateLink.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Card from '../../../components/ui/Card.astro';
+import Badge from '../../../components/ui/Badge.astro';
+import StarRating from '../../../components/ui/StarRating.astro';
+import AffiliateLink from '../../../components/ui/AffiliateLink.astro';
 
-const allProducts = await getCollection('products', ({ data }) => data.lang === 'fr');
+const allProducts = await getCollection('products', ({ data }) => data.lang === 'en');
 const sorted = allProducts.sort((a, b) => {
   if (a.data.featured && !b.data.featured) return -1;
   if (!a.data.featured && b.data.featured) return 1;
@@ -17,8 +17,9 @@ const categories = [...new Set(sorted.map((p) => p.data.category))];
 ---
 
 <BaseLayout
-  title="Produits recommandés"
-  description="Découvrez notre sélection de produits et services testés et approuvés par l'équipe Elysium Scale."
+  title="Recommended Products"
+  description="Discover our selection of products and services tested and approved by the Elysium Scale team."
+  lang="en"
 >
   <!-- Page header -->
   <div class="relative overflow-hidden pt-16 pb-12">
@@ -27,12 +28,12 @@ const categories = [...new Set(sorted.map((p) => p.data.category))];
     </div>
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="max-w-2xl">
-        <Badge variant="purple" size="md" class="mb-4">Produits</Badge>
+        <Badge variant="purple" size="md" class="mb-4">Products</Badge>
         <h1 class="text-4xl sm:text-5xl font-bold text-text-primary mb-4">
-          Nos recommandations
+          Our recommendations
         </h1>
         <p class="text-lg text-text-secondary">
-          Des produits sélectionnés après tests rigoureux. Que le meilleur gagne.
+          Products selected after rigorous testing. May the best win.
         </p>
       </div>
     </div>
@@ -42,7 +43,7 @@ const categories = [...new Set(sorted.map((p) => p.data.category))];
     <!-- Category filters -->
     {categories.length > 1 && (
       <div class="flex flex-wrap gap-2 mb-10">
-        <span class="text-sm font-medium text-text-muted self-center mr-2">Catégories :</span>
+        <span class="text-sm font-medium text-text-muted self-center mr-2">Categories:</span>
         {categories.map((cat) => (
           <span class="px-3 py-1.5 text-sm text-text-secondary bg-dark-surface border border-dark-border rounded-full">
             {cat}
@@ -53,7 +54,7 @@ const categories = [...new Set(sorted.map((p) => p.data.category))];
 
     {sorted.length === 0 ? (
       <div class="text-center py-20 text-text-muted">
-        <p>Aucun produit disponible pour l'instant. Revenez bientôt !</p>
+        <p>No products available yet. Check back soon!</p>
       </div>
     ) : (
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -80,7 +81,7 @@ const categories = [...new Set(sorted.map((p) => p.data.category))];
                   )}
                   <Badge variant="purple">{product.data.category}</Badge>
                 </div>
-                {product.data.featured && <Badge variant="pink">⭐ Top choix</Badge>}
+                {product.data.featured && <Badge variant="pink">⭐ Top pick</Badge>}
               </div>
 
               <h2 class="text-lg font-bold text-text-primary mb-2">{product.data.name}</h2>
@@ -107,10 +108,10 @@ const categories = [...new Set(sorted.map((p) => p.data.category))];
                 )}
                 <div class="flex items-center gap-2 ml-auto">
                   <a
-                    href={`/produits/${product.slug}`}
+                    href={`/en/products/${product.slug}`}
                     class="text-sm text-text-secondary hover:text-text-primary transition-colors"
                   >
-                    Voir l'avis
+                    See review
                   </a>
                   <AffiliateLink
                     affiliateId={product.data.affiliateId}

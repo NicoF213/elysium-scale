@@ -3,15 +3,18 @@ import SEO from '../components/layout/SEO.astro';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import type { SeoProps } from '../utils/seo';
+import type { Lang } from '../utils/i18n';
 import '../styles/global.css';
 
-interface Props extends SeoProps {}
+interface Props extends SeoProps {
+  lang?: Lang;
+}
 
-const seoProps = Astro.props;
+const { lang = 'fr', ...seoProps } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="fr" class="scroll-smooth">
+<html lang={lang} class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -23,7 +26,7 @@ const seoProps = Astro.props;
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-    <SEO {...seoProps} />
+    <SEO {...seoProps} lang={lang} />
   </head>
   <body class="min-h-screen flex flex-col font-sans bg-dark-bg text-text-primary antialiased">
     <Header />

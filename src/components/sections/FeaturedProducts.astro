@@ -4,20 +4,29 @@ import Card from '../ui/Card.astro';
 import Badge from '../ui/Badge.astro';
 import StarRating from '../ui/StarRating.astro';
 import AffiliateLink from '../ui/AffiliateLink.astro';
+import type { Lang } from '../../utils/i18n';
+import { useTranslations } from '../../utils/i18n';
 
 interface Props {
   limit?: number;
   title?: string;
   subtitle?: string;
+  lang?: Lang;
 }
 
+const { limit = 3, lang = 'fr' } = Astro.props;
+const t = useTranslations(lang);
+
 const {
-  limit = 3,
-  title = 'Produits recommandés',
-  subtitle = 'Nos sélections soigneusement testées et approuvées',
+  title = t('products.heading'),
+  subtitle = lang === 'fr'
+    ? 'Nos sélections soigneusement testées et approuvées'
+    : 'Our carefully tested and approved selections',
 } = Astro.props;
 
-const allProducts = await getCollection('products', ({ data }) => !data.featured === false);
+const productsBase = lang === 'en' ? '/en/products' : '/produits';
+
+const allProducts = await getCollection('products', ({ data }) => data.lang === lang);
 const featured = allProducts.filter((p) => p.data.featured).slice(0, limit);
 const products = featured.length > 0 ? featured : allProducts.slice(0, limit);
 ---
@@ -57,7 +66,7 @@ const products = featured.length > 0 ? featured : allProducts.slice(0, limit);
                     <Badge variant="purple">{product.data.category}</Badge>
                   </div>
                   {product.data.featured && (
-                    <Badge variant="pink">⭐ Top choix</Badge>
+                    <Badge variant="pink">{t('products.top_choice')}</Badge>
                   )}
                 </div>
 
@@ -89,10 +98,10 @@ const products = featured.length > 0 ? featured : allProducts.slice(0, limit);
                   )}
                   <div class="flex items-center gap-2 ml-auto">
                     <a
-                      href={`/produits/${product.slug}`}
+                      href={`${productsBase}/${product.slug}`}
                       class="text-sm text-text-secondary hover:text-text-primary transition-colors"
                     >
-                      Voir l'avis
+                      {t('products.see_review')}
                     </a>
                     <AffiliateLink
                       affiliateId={product.data.affiliateId}
@@ -110,10 +119,10 @@ const products = featured.length > 0 ? featured : allProducts.slice(0, limit);
 
       <div class="text-center mt-10">
         <a
-          href="/produits"
+          href={productsBase}
           class="inline-flex items-center gap-2 text-sm font-medium text-brand-purple hover:text-brand-pink transition-colors"
         >
-          Voir tous les produits
+          {t('products.all')}
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>

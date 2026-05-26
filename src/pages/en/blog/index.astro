@@ -1,11 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Card from '../../components/ui/Card.astro';
-import Badge from '../../components/ui/Badge.astro';
-import { formatDateShort } from '../../utils/formatPrice';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Card from '../../../components/ui/Card.astro';
+import Badge from '../../../components/ui/Badge.astro';
+import { formatDateShort } from '../../../utils/formatPrice';
 
-const allArticles = await getCollection('articles', ({ data }) => !data.draft && data.lang === 'fr');
+const allArticles = await getCollection('articles', ({ data }) => !data.draft && data.lang === 'en');
 const sorted = allArticles.sort(
   (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
 );
@@ -15,7 +15,8 @@ const categories = [...new Set(sorted.map((a) => a.data.category))];
 
 <BaseLayout
   title="Blog"
-  description="Guides, comparatifs et conseils pour choisir les meilleurs outils et services en ligne."
+  description="Guides, comparisons and expert advice to help you choose the best online tools and services."
+  lang="en"
 >
   <!-- Page header -->
   <div class="relative overflow-hidden pt-16 pb-12">
@@ -26,10 +27,10 @@ const categories = [...new Set(sorted.map((a) => a.data.category))];
       <div class="max-w-2xl">
         <Badge variant="blue" size="md" class="mb-4">Blog</Badge>
         <h1 class="text-4xl sm:text-5xl font-bold text-text-primary mb-4">
-          Guides & Comparatifs
+          Guides & Reviews
         </h1>
         <p class="text-lg text-text-secondary">
-          Des articles approfondis pour vous aider à faire les meilleurs choix.
+          In-depth articles to help you make the best choices.
         </p>
       </div>
     </div>
@@ -39,7 +40,7 @@ const categories = [...new Set(sorted.map((a) => a.data.category))];
     <!-- Category filters -->
     {categories.length > 1 && (
       <div class="flex flex-wrap gap-2 mb-10">
-        <span class="text-sm font-medium text-text-muted self-center mr-2">Catégories :</span>
+        <span class="text-sm font-medium text-text-muted self-center mr-2">Categories:</span>
         {categories.map((cat) => (
           <span class="px-3 py-1.5 text-sm text-text-secondary bg-dark-surface border border-dark-border rounded-full cursor-default">
             {cat}
@@ -50,12 +51,12 @@ const categories = [...new Set(sorted.map((a) => a.data.category))];
 
     {sorted.length === 0 ? (
       <div class="text-center py-20 text-text-muted">
-        <p>Aucun article publié pour l'instant. Revenez bientôt !</p>
+        <p>No articles published yet. Check back soon!</p>
       </div>
     ) : (
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sorted.map((article) => (
-          <Card href={`/blog/${article.slug}`} hoverable padding="none">
+          <Card href={`/en/blog/${article.slug}`} hoverable padding="none">
             <article>
               {article.data.image && (
                 <div class="aspect-[16/9] overflow-hidden rounded-t-2xl">
