@@ -40,6 +40,11 @@ WhoScale est l'outil de référence pour comprendre le marché infopreneur de l'
 
 </div>
 
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #120B30; border: 1px solid #F5620F30; border-radius: 12px; padding: 16px 20px; margin: 8px 0 32px;">
+  <div style="color: #B8B0D8; font-size: 14px; line-height: 1.5;">Déjà convaincu ? Profitez de <strong style="color: #F5620F;">−20%</strong> via notre lien partenaire.</div>
+  <a href="https://www.whoscale.io/fr?ref=scale20" rel="nofollow sponsored noopener" target="_blank" style="flex-shrink: 0; display: inline-block; background: #F5620F; color: white; font-weight: 700; font-size: 13px; padding: 10px 18px; border-radius: 8px; text-decoration: none; white-space: nowrap;">Essayer WhoScale →</a>
+</div>
+
 ---
 
 ## C'est quoi WhoScale ?
@@ -88,6 +93,14 @@ L'accès aux tunnels de vente éprouvés est probablement la fonctionnalité la 
 
 Vous accédez à la séquence complète : page d'opt-in, vidéo de vente, bon de commande, upsells, pages de remerciement. C'est l'équivalent d'acheter 50 formations pour en étudier les tunnels — en quelques minutes.
 
+<div style="background: linear-gradient(135deg, #F5620F 0%, #FF8C42 100%); border-radius: 14px; padding: 24px 28px; margin: 8px 0 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;">
+  <div>
+    <div style="color: white; font-size: 17px; font-weight: 800; margin-bottom: 4px;">Accédez aux données dès maintenant</div>
+    <div style="color: rgba(255,255,255,0.85); font-size: 13px;">Classements live · Tunnels de vente · Blueprints gagnants</div>
+  </div>
+  <a href="https://www.whoscale.io/fr?ref=scale20" rel="nofollow sponsored noopener" target="_blank" style="flex-shrink: 0; display: inline-block; background: white; color: #F5620F; font-weight: 800; font-size: 14px; padding: 12px 24px; border-radius: 9px; text-decoration: none; white-space: nowrap;">Essayer avec −20% →</a>
+</div>
+
 ---
 
 ## Pour qui est fait WhoScale ?
@@ -117,6 +130,17 @@ Vous accédez à la séquence complète : page d'opt-in, vidéo de vente, bon de
 **Les blueprints font gagner du temps.** Ce qui prendrait plusieurs jours d'analyse manuelle (opt-inner, traverser les tunnels, noter les patterns) se fait en 20 à 30 minutes. Pour quelqu'un qui prépare un lancement, c'est un avantage concret et mesurable.
 
 **La base de tunnels est régulièrement mise à jour.** Les données reflètent ce qui tourne *maintenant*, pas il y a 18 mois. C'est crucial dans un marché qui évolue vite.
+
+<div style="background: #120B30; border: 1px solid #2D1B69; border-radius: 14px; padding: 20px 24px; margin: 8px 0 32px;">
+  <div style="display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px;">
+    <span style="font-size: 20px; flex-shrink: 0;">🎯</span>
+    <div style="color: #F1F0FF; font-size: 15px; font-weight: 700; line-height: 1.4;">Vous vous êtes reconnu dans un de ces cas d'usage ?</div>
+  </div>
+  <div style="color: #B8B0D8; font-size: 14px; margin-bottom: 16px; padding-left: 32px; line-height: 1.6;">WhoScale vous donne exactement les données dont vous avez besoin. Testez l'outil avec <strong style="color: #F5620F;">−20%</strong> sur votre premier abonnement.</div>
+  <div style="padding-left: 32px;">
+    <a href="https://www.whoscale.io/fr?ref=scale20" rel="nofollow sponsored noopener" target="_blank" style="display: inline-block; background: #F5620F; color: white; font-weight: 700; font-size: 14px; padding: 11px 22px; border-radius: 9px; text-decoration: none;">Voir qui scale dans ma niche →</a>
+  </div>
+</div>
 
 ---
 
